@@ -1,7 +1,8 @@
 ﻿namespace StarASCII
 {
-    public readonly struct SFrame(string content)
+    public struct SFrame()
     {
-        public readonly string Content => content;
+        public uint Duration { get; set; }
+        public string Content { get; set; }
     }
 }

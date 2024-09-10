@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace StarASCII
 {
-    public sealed class EPAnimation()
+    public sealed class SAnimation()
     {
         public float Delay { get => delay; set => delay = value; }
         public uint Loops { get => loops; set => loops = value; }
@@ -14,27 +14,32 @@ namespace StarASCII
         private float delay = 500;
         private uint loops = 1;
 
+        private readonly StringBuilder buffer = new();
+
         public void Play()
         {
             Console.Clear();
-            StringBuilder buffer = new();
-
+            
             for (uint i = 0; i < loops; i++)
             {
-                foreach (SFrame frame in frames)
+                for (int j = 0; j < frames.Count; j++)
                 {
+                    SFrame frame = frames[j];
+
                     _ = buffer.Clear();
                     _ = buffer.Append(frame.Content);
 
                     Console.SetCursorPosition(0, 0);
-
                     Console.Write(buffer.ToString());
-                    Thread.Sleep(TimeSpan.FromMilliseconds(delay));
+
+                    Thread.Sleep(TimeSpan.FromMilliseconds(frame.Duration));
                 }
             }
 
             Thread.Sleep(TimeSpan.FromSeconds(2f));
+
             Console.Clear();
+            buffer.Clear();
         }
 
         public void AddFrame(SFrame frame)
