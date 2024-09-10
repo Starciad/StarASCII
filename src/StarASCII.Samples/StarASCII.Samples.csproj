@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!-- HEADER -->
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
@@ -6,11 +7,15 @@
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
+	<!-- DEPENDENCIES -->
 	<ItemGroup>
 		<ProjectReference Include="..\StarASCII\StarASCII.csproj" />
 	</ItemGroup>
 
+	<!-- FILES -->
 	<ItemGroup>
-	  <Folder Include="assets\" />
+		<None Update="assets\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>

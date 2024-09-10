@@ -7,11 +7,9 @@ namespace StarASCII
 {
     public sealed class SAnimation()
     {
-        public float Delay { get => delay; set => delay = value; }
         public uint Loops { get => loops; set => loops = value; }
 
         private readonly List<SFrame> frames = [];
-        private float delay = 500;
         private uint loops = 1;
 
         private readonly StringBuilder buffer = new();

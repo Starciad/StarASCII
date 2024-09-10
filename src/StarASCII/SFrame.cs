@@ -2,7 +2,7 @@
 {
     public struct SFrame()
     {
-        public uint Duration { get; set; }
         public string Content { get; set; }
+        public uint Duration { get; set; }
     }
 }

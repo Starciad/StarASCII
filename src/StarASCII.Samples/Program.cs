@@ -2,21 +2,27 @@
 using StarASCII.Samples.Animations.Common;
 
 using System;
+using System.Text;
 
 namespace StarASCII.Samples
 {
     internal static class Program
     {
+        internal static string BaseDirectory => AppDomain.CurrentDomain.BaseDirectory;
+
         private static readonly string BR = Environment.NewLine;
 
         private static readonly AnimationSample[] samples = [
-            new Animation_01(),
-            new Animation_01(),
             new Animation_01(),
         ];
 
         private static void Main()
         {
+            Console.Title = "STAR ASCII - SAMPLES";
+
+            Console.InputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
+
             string userInput;
             int userIndex;
 

@@ -1,12 +1,13 @@
 ﻿namespace StarASCII.Samples.Animations
 {
-    internal abstract class AnimationSample
+    public abstract class AnimationSample
     {
-        internal string Name { get; set; }
+        public string Name { get; protected set; }
+        protected SAnimation Animation { get; set; }
 
-        internal void Play()
+        public void Play()
         {
-
+            this.Animation.Play();
         }
     }
 }
