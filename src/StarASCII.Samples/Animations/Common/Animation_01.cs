@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System;
 
 namespace StarASCII.Samples.Animations.Common
 {
@@ -20,24 +21,28 @@ namespace StarASCII.Samples.Animations.Common
             {
                 Content = File.ReadAllText(Path.Combine(framesDirectory, $"frame_001.txt")),
                 Duration = this.duration,
+                ForegroundColor = ConsoleColor.Green,
             });
 
             this.Animation.AddFrame(new SFrame()
             {
                 Content = File.ReadAllText(Path.Combine(framesDirectory, $"frame_002.txt")),
                 Duration = this.duration,
+                ForegroundColor = ConsoleColor.Red,
             });
 
             this.Animation.AddFrame(new SFrame()
             {
                 Content = File.ReadAllText(Path.Combine(framesDirectory, $"frame_003.txt")),
                 Duration = this.duration,
+                ForegroundColor = ConsoleColor.Yellow,
             });
 
             this.Animation.AddFrame(new SFrame()
             {
                 Content = File.ReadAllText(Path.Combine(framesDirectory, $"frame_004.txt")),
                 Duration = this.duration,
+                ForegroundColor = ConsoleColor.Blue,
             });
         }
     }

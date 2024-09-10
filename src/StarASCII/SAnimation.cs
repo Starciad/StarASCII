@@ -28,6 +28,10 @@ namespace StarASCII
                     _ = buffer.Append(frame.Content);
 
                     Console.SetCursorPosition(0, 0);
+
+                    Console.ForegroundColor = frame.ForegroundColor;
+                    Console.BackgroundColor = frame.BackgroundColor;
+
                     Console.Write(buffer.ToString());
 
                     Thread.Sleep(TimeSpan.FromMilliseconds(frame.Duration));
