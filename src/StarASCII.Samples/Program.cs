@@ -15,6 +15,7 @@ namespace StarASCII.Samples
         private static readonly AnimationSample[] samples = [
             new Animation_01(),
             new Animation_02(),
+            new Animation_03(),
         ];
 
         private static void Main()
