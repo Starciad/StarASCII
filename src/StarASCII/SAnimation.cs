@@ -1,65 +1,147 @@
-﻿using System;
+﻿using StarASCII.Enums;
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace StarASCII
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public sealed class SAnimation()
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint Loops { get => loops; set => loops = value; }
+        public uint Loops
+        {
+            get => this.loops;
+            set => this.loops = value > 0 ? value : 1;
+        }
 
-        private readonly List<SFrame> frames = [];
+        public SAnimationDirection Direction { get; set; }
+        public SAnimationDisplayMode DisplayMode { get; set; }
+
+        public delegate void AnimationEventHandler();
+        public delegate void FrameChangedEventHandler(SFrame frame, int frameIndex);
+        public delegate void LoopCompletedEventHandler(uint loopCount);
+
+        public event AnimationEventHandler OnAnimationStart;
+        public event AnimationEventHandler OnAnimationEnd;
+        public event FrameChangedEventHandler OnFrameChanged;
+        public event LoopCompletedEventHandler OnLoopCompleted;
+
+        private readonly List<SFrame> registeredFrames = [];
         private uint loops = 1;
 
         private readonly StringBuilder buffer = new();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Play()
+        public async Task PlayAsync()
         {
-            Console.Clear();
-            
-            for (uint i = 0; i < loops; i++)
+            this.OnAnimationStart?.Invoke();
+
+            int tCursorPosX, tCursorPosY;
+
+            switch (this.DisplayMode)
             {
-                for (int j = 0; j < frames.Count; j++)
-                {
-                    SFrame frame = frames[j];
-
-                    _ = buffer.Clear();
-                    _ = buffer.Append(frame.Content);
-
+                case SAnimationDisplayMode.CleanAndStart:
+                    Console.Clear();
                     Console.SetCursorPosition(0, 0);
+                    break;
+
+                case SAnimationDisplayMode.StartWithoutCleaning:
+                    Console.SetCursorPosition(0, Console.CursorTop + 1);
+                    break;
+
+                default:
+                    Console.Clear();
+                    Console.SetCursorPosition(0, 0);
+                    break;
+            }
+
+            tCursorPosX = Console.CursorLeft;
+            tCursorPosY = Console.CursorTop;
+
+            SFrame[] framesToExecute = GetFramesToExecute();
+
+            for (uint i = 0; i < this.loops; i++)
+            {
+                for (int j = 0; j < framesToExecute.Length; j++)
+                {
+                    SFrame frame = framesToExecute[j];
+
+                    _ = this.buffer.Clear();
+                    _ = this.buffer.Append(frame.Content);
+
+                    Console.SetCursorPosition(tCursorPosX, tCursorPosY);
 
                     Console.ForegroundColor = frame.ForegroundColor;
                     Console.BackgroundColor = frame.BackgroundColor;
 
-                    Console.Write(buffer.ToString());
+                    Console.Write(this.buffer.ToString());
 
-                    Thread.Sleep(TimeSpan.FromMilliseconds(frame.Duration));
+                    this.OnFrameChanged?.Invoke(frame, j);
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(frame.Duration));
                 }
+
+                this.OnLoopCompleted?.Invoke(i + 1);
             }
 
-            Thread.Sleep(TimeSpan.FromSeconds(2f));
-
-            Console.Clear();
-            buffer.Clear();
+            _ = this.buffer.Clear();
+            this.OnAnimationEnd?.Invoke();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="frame"></param>
         public void AddFrame(SFrame frame)
         {
-            frames.Add(frame);
+            this.registeredFrames.Add(frame);
+        }
+
+        private SFrame[] GetFramesToExecute()
+        {
+            return this.Direction switch
+            {
+                SAnimationDirection.Forward => Forward(),
+                SAnimationDirection.Reverse => Reverse(),
+                SAnimationDirection.PingPong => PingPong(),
+                SAnimationDirection.PingPongReverse => PingPongReverse(),
+                _ => Forward(),
+            };
+
+            SFrame[] Forward()
+            {
+                return [.. this.registeredFrames];
+            }
+
+            SFrame[] Reverse()
+            {
+                SFrame[] result = [.. this.registeredFrames];
+                Array.Reverse(result);
+                return result;
+            }
+
+            SFrame[] PingPong()
+            {
+                SFrame[] forward = [.. this.registeredFrames];
+                SFrame[] result = new SFrame[this.registeredFrames.Count * 2];
+                forward.CopyTo(result, 0);
+                ReverseInto(result, this.registeredFrames.Count);
+                return result;
+            }
+
+            SFrame[] PingPongReverse()
+            {
+                SFrame[] reverse = Reverse();
+                SFrame[] result = new SFrame[this.registeredFrames.Count * 2];
+                reverse.CopyTo(result, 0);
+                this.registeredFrames.ToArray().CopyTo(result, reverse.Length);
+                return result;
+            }
+
+            void ReverseInto(SFrame[] array, int offset)
+            {
+                for (int i = 0, j = this.registeredFrames.Count - 1; i < this.registeredFrames.Count; i++, j--)
+                {
+                    array[offset + i] = this.registeredFrames[j];
+                }
+            }
         }
     }
 }
