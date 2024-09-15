@@ -1,7 +1,7 @@
 ﻿using StarASCII.Enums;
 
-using System.IO;
 using System;
+using System.IO;
 
 namespace StarASCII.Samples.Animations.Common
 {
