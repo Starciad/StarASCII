@@ -1,16 +1,62 @@
-# All contributions, however small are valued!
+# Contributing to the Project
 
-# Steps to contribute
+We are excited to receive your contributions. However, it is crucial to follow guidelines to ensure effective collaboration.
 
- If you want to make a small change, go ahead and raise a pull request, otherwise follow these steps:
+## Versioning
 
-1. View the [Issues](https://github.com/Username/Project/issues) page to see a To-Do list of things to be implemented.
-2. Raise an issue or comment on an existing issue with what you want to contribute if one does not already exist.
-3. When you get the go ahead, follow the coding guidelines and raise a pull request.
-4. Include a link to the issue in your pull request.
+We follow [Semantic Versioning (SemVer)](https://semver.org/). Prioritize PRs with `patch` or `minor` changes. Significant changes require prior discussion for integration in the next major release. Mark removals of public properties or methods as `Obsolete` in the latest release branch.
 
-# Coding Guidelines
+## Descriptive Titles
 
-- Projects use StyleCop and .editorconfig to produce style warnings. Please fix all warnings in any code you submit.
-- Write unit tests for any code written.
+Use concise and descriptive titles in issues or PRs. Details should be in the description.
 
+## Commit Messages
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). Each commit should describe the change. Reference open issues with `#`.
+
+**Examples of good commit messages:**
+
+- `fix: Fix potential memory leak (#142).`;
+- `feat: Add new entity (#169).`;
+- `refactor: Refactor code for the 5th entity.`;
+- `feat: Add new GUI component.`.
+
+**Examples of incorrect messages:**
+
+- `I'm bad.`;
+- `Tit and tat.`;
+- `Fixed.`;
+- `Oops.`.
+
+## Code Style
+
+We follow the [Microsoft C# coding conventions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions), with some exceptions.
+
+### Main Preferences
+
+1. Prefix `S` in file names and `IS` for interfaces;
+1. Use `this` to reference fields and properties;
+1. Avoid asynchronous code in inappropriate contexts.
+
+### Other Preferences
+
+1. Do not use `var`;
+1. Mark immutable fields as `readonly`;
+1. Use `internal` and `public` sparingly;
+1. Utilize object initializers whenever possible.
+
+### Inline `out` Declarations
+
+Prefer inline form for `out` declarations: `SomeOutMethod(42, out PType value);`.
+
+### Member Ordering
+
+Always order members and properties: Properties, `const` Fields, Variable Fields, Events and Delegates, Constructors, Methods.
+
+## Pull Request
+
+When contributing and creating a PR, provide clear and informative documentation. This increases the chances of integration.
+
+## Code Review
+
+Each PR is carefully reviewed. If rejected, there will be justification. Thank you for dedicating time and effort to Star ASCII. Questions? Contact the team or community.
