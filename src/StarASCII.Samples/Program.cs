@@ -12,11 +12,12 @@ namespace StarASCII.Samples
 
         private static readonly string BR = Environment.NewLine;
 
-        private static readonly AnimationSample[] samples = [
+        private static readonly AnimationSample[] samples = new AnimationSample[]
+        {
             new Animation_01(),
             new Animation_02(),
             new Animation_03(),
-        ];
+        };
 
         private static void Main()
         {
