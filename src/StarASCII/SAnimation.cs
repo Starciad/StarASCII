@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace StarASCII
 {
@@ -33,7 +32,7 @@ namespace StarASCII
 
         private readonly StringBuilder buffer = new();
 
-        public async Task PlayAsync()
+        public void Play()
         {
             this.OnAnimationStart?.Invoke();
 
@@ -79,13 +78,14 @@ namespace StarASCII
 
                     this.OnFrameChanged?.Invoke(frame, j);
 
-                    await Task.Delay(TimeSpan.FromMilliseconds(frame.Duration));
+                    Thread.Sleep(TimeSpan.FromMilliseconds(frame.Duration));
                 }
 
                 this.OnLoopCompleted?.Invoke(i + 1);
             }
 
             _ = this.buffer.Clear();
+
             this.OnAnimationEnd?.Invoke();
         }
 
@@ -101,7 +101,6 @@ namespace StarASCII
                 SAnimationDirection.Forward => Forward(),
                 SAnimationDirection.Reverse => Reverse(),
                 SAnimationDirection.PingPong => PingPong(),
-                SAnimationDirection.PingPongReverse => PingPongReverse(),
                 _ => Forward(),
             };
 
@@ -123,15 +122,6 @@ namespace StarASCII
                 SFrame[] result = new SFrame[this.registeredFrames.Count * 2];
                 forward.CopyTo(result, 0);
                 ReverseInto(result, this.registeredFrames.Count);
-                return result;
-            }
-
-            SFrame[] PingPongReverse()
-            {
-                SFrame[] reverse = Reverse();
-                SFrame[] result = new SFrame[this.registeredFrames.Count * 2];
-                reverse.CopyTo(result, 0);
-                this.registeredFrames.ToArray().CopyTo(result, reverse.Length);
                 return result;
             }
 

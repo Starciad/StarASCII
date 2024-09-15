@@ -5,6 +5,5 @@
         Forward,
         Reverse,
         PingPong,
-        PingPongReverse,
     }
 }

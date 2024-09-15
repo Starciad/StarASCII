@@ -7,9 +7,10 @@ namespace StarASCII
     {
         public string Content { get; private set; }
         public uint Duration { get; private set; }
-        public ConsoleColor ForegroundColor { get; private set; }
-        public ConsoleColor BackgroundColor { get; private set; }
         public (uint width, uint height) Size { get; private set; }
+
+        public ConsoleColor ForegroundColor { get; set; }
+        public ConsoleColor BackgroundColor { get; set; }
 
         public SFrame(string content, uint duration)
         {
@@ -27,21 +28,20 @@ namespace StarASCII
 
         private static (uint, uint) GetSize(string value)
         {
-            uint columns = 0;
-
+            uint width = 0;
             string[] rows = value.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             for (int i = 0; i < rows.Length; i++)
             {
                 int length = rows[i].Length;
 
-                if (columns < length)
+                if (width <= length)
                 {
-                    columns = (uint)length;
+                    width = (uint)length;
                 }
             }
 
-            return ((uint)rows.Length, columns);
+            return (width + 1, (uint)rows.Length);
         }
     }
 }
