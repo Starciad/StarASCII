@@ -15,7 +15,7 @@ namespace StarASCII.Samples.Animations.Common
             this.Name = "Zebra (UTF-8)";
             this.Animation = new()
             {
-                Loops = 2,
+                Loops = 4,
             };
 
             for (int i = 0; i < this.frames; i++)
