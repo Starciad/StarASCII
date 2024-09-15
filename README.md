@@ -1,5 +1,8 @@
 # StarASCII
 
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](./LICENSE)
+[![NuGet](https://img.shields.io/nuget/v/StarASCII.svg?label=NuGet)](https://nuget.org/packages/)
+
 🧩 ➥ Library for creating ASCII animations for terminals.
 
 ## Table of Contents
