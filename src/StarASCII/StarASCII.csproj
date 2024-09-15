@@ -1,48 +1,66 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<!-- HEADER -->
-	<PropertyGroup>
+	<PropertyGroup Label="Header">
 		<OutputType>Library</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
-		<ImplicitUsings>disable</ImplicitUsings>
-		<Nullable>disable</Nullable>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
-	<!-- PACKAGE -->
-	<PropertyGroup>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PropertyGroup Label="Package">
 		<Title>StarASCII</Title>
-		<Authors>Starciad</Authors>
+		<Authors>Davi "Starciad" Fernandes</Authors>
+		<Company>Davi "Starciad" Fernandes</Company>
 		<Description>Library for creating ASCII animations for terminals.</Description>
+		<Copyright>Copyright © Davi "Starciad" Fernandes. All rights Reserved</Copyright>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/Starciad/StarASCII.git</PackageProjectUrl>
-		<Copyright>© 2024 Davi "Starciad" Fernandes. All rights reserved.</Copyright>
+		<!--<PackageIcon>Icon.png</PackageIcon>-->
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/Starciad/StarASCII.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<PackageReleaseNotes>https://github.com/Starciad/StarASCII/releases</PackageReleaseNotes>
 		<PackageTags>ASCII; console; dotnet; dotnet-core; animations; tool; library; terminal; text-based; graphics; framework; cross-platform;</PackageTags>
 		<NeutralLanguage>en</NeutralLanguage>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
-	<!-- TRIMMABLE -->
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<IsTrimmable>True</IsTrimmable>
+	<PropertyGroup Label="Build">
+		<LangVersion>latest</LangVersion>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<IsTrimmable>true</IsTrimmable>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<IsTrimmable>True</IsTrimmable>
-	</PropertyGroup>
-
-	<!-- FILES -->
-	<ItemGroup>
-		<None Include="..\..\LICENSE">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\..\README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
+	<ItemGroup Label="Package References">
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" PrivateAssets="all" Version="17.3.44" />
+		<PackageReference Include="MinVer" PrivateAssets="all" Version="4.2.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" Version="1.1.1" />
 	</ItemGroup>
+
+	<PropertyGroup Label="Build">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Source Link">
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
+
+	<ItemGroup Label="Files">
+		<!--<None Include="..\..\Icon.png" Pack="true" PackagePath="\" />-->
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<Target Name="Versioning" BeforeTargets="MinVer">
+		<PropertyGroup Label="Build">
+			<MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+			<MinVerVerbosity>normal</MinVerVerbosity>
+		</PropertyGroup>
+	</Target>
 </Project>

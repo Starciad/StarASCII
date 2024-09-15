@@ -5,8 +5,14 @@ using System.Threading;
 
 namespace StarASCII
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class SAnimation()
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public uint Loops { get => loops; set => loops = value; }
 
         private readonly List<SFrame> frames = [];
@@ -14,6 +20,9 @@ namespace StarASCII
 
         private readonly StringBuilder buffer = new();
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Play()
         {
             Console.Clear();
@@ -44,6 +53,10 @@ namespace StarASCII
             buffer.Clear();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="frame"></param>
         public void AddFrame(SFrame frame)
         {
             frames.Add(frame);
