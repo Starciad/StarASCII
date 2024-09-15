@@ -9,6 +9,7 @@ namespace StarASCII.Samples.Animations.Common
     {
         private static readonly string framesDirectory = Path.Combine(Program.BaseDirectory, "assets", "blinking_eye");
 
+        private readonly sbyte frames = 4;
         private readonly uint duration = 350;
 
         internal Animation_01()
@@ -19,25 +20,15 @@ namespace StarASCII.Samples.Animations.Common
                 Loops = 3,
             };
 
-            this.Animation.AddFrame(new SFrame(File.ReadAllText(Path.Combine(framesDirectory, $"frame_001.txt")), this.duration)
+            for (int i = 0; i < this.frames; i++)
             {
-                ForegroundColor = ConsoleColor.Green,
-            });
+                int index = i + 1;
 
-            this.Animation.AddFrame(new SFrame(File.ReadAllText(Path.Combine(framesDirectory, $"frame_002.txt")), this.duration)
-            {
-                ForegroundColor = ConsoleColor.Red,
-            });
-
-            this.Animation.AddFrame(new SFrame(File.ReadAllText(Path.Combine(framesDirectory, $"frame_003.txt")), this.duration)
-            {
-                ForegroundColor = ConsoleColor.Yellow,
-            });
-
-            this.Animation.AddFrame(new SFrame(File.ReadAllText(Path.Combine(framesDirectory, $"frame_004.txt")), this.duration)
-            {
-                ForegroundColor = ConsoleColor.Blue,
-            });
+                this.Animation.AddFrame(new SFrame(File.ReadAllText(Path.Combine(framesDirectory, $"frame_{index:000}.txt")), this.duration)
+                {
+                    ForegroundColor = ConsoleColor.Green,
+                });
+            }
 
             this.Animation.Direction = SAnimationDirection.PingPong;
         }
