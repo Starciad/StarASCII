@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -84,15 +85,27 @@ namespace StarASCII
         /// <exception cref="InvalidOperationException">Thrown when attempting to play an animation with no registered frames.</exception>
         public void Play()
         {
+            ValidateFrames();
+            this.OnAnimationStart?.Invoke();
+
+            (int cursorX, int cursorY) = SetupDisplay();
+            SFrame[] framesToExecute = GetFramesToExecute();
+
+            ExecuteAnimation(framesToExecute, cursorX, cursorY);
+
+            FinalizeAnimation();
+        }
+
+        private void ValidateFrames()
+        {
             if (this.registeredFrames.Count == 0)
             {
                 throw new InvalidOperationException("No frames have been registered. Cannot start animation.");
             }
+        }
 
-            this.OnAnimationStart?.Invoke();
-
-            int tCursorPosX, tCursorPosY;
-
+        private (int, int) SetupDisplay()
+        {
             switch (this.DisplayMode)
             {
                 case SAnimationDisplayMode.CleanAndStart:
@@ -110,37 +123,43 @@ namespace StarASCII
                     break;
             }
 
-            tCursorPosX = Console.CursorLeft;
-            tCursorPosY = Console.CursorTop;
+            return (Console.CursorLeft, Console.CursorTop);
+        }
 
-            SFrame[] framesToExecute = GetFramesToExecute();
-
-            for (uint i = 0; i < this.loops; i++)
+        private void ExecuteAnimation(SFrame[] framesToExecute, int cursorX, int cursorY)
+        {
+            for (uint loop = 0; loop < this.loops; loop++)
             {
-                for (int j = 0; j < framesToExecute.Length; j++)
-                {
-                    SFrame frame = framesToExecute[j];
-
-                    _ = this.buffer.Clear();
-                    _ = this.buffer.Append(frame.Content);
-
-                    Console.SetCursorPosition(tCursorPosX, tCursorPosY);
-
-                    Console.ForegroundColor = frame.ForegroundColor;
-                    Console.BackgroundColor = frame.BackgroundColor;
-
-                    Console.Write(this.buffer.ToString());
-
-                    this.OnFrameChanged?.Invoke(frame, j);
-
-                    Thread.Sleep(TimeSpan.FromMilliseconds(frame.Duration));
-                }
-
-                this.OnLoopCompleted?.Invoke(i + 1);
+                PlayFrames(framesToExecute, cursorX, cursorY);
+                this.OnLoopCompleted?.Invoke(loop + 1);
             }
+        }
 
+        private void PlayFrames(SFrame[] frames, int cursorX, int cursorY)
+        {
+            foreach (var (frame, index) in frames.Select((f, idx) => (f, idx)))
+            {
+                RenderFrame(frame, cursorX, cursorY);
+                this.OnFrameChanged?.Invoke(frame, index);
+                Thread.Sleep(TimeSpan.FromMilliseconds(frame.Duration));
+            }
+        }
+
+        private void RenderFrame(SFrame frame, int cursorX, int cursorY)
+        {
             _ = this.buffer.Clear();
+            _ = this.buffer.Append(frame.Content);
 
+            Console.SetCursorPosition(cursorX, cursorY);
+            Console.ForegroundColor = frame.ForegroundColor;
+            Console.BackgroundColor = frame.BackgroundColor;
+
+            Console.Write(this.buffer.ToString());
+        }
+
+        private void FinalizeAnimation()
+        {
+            _ = this.buffer.Clear();
             this.OnAnimationEnd?.Invoke();
         }
 
