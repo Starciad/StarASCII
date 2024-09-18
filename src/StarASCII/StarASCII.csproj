@@ -20,6 +20,11 @@
 		<PackageReleaseNotes>https://github.com/Starciad/StarASCII/releases</PackageReleaseNotes>
 		<PackageTags>ASCII; console; dotnet; dotnet-core; animations; tool; library; terminal; text-based; graphics; framework; cross-platform;</PackageTags>
 		<NeutralLanguage>en</NeutralLanguage>
+		<Version>1.0.0</Version>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<PackageId>StarASCII</PackageId>
+		<Product>StarASCII</Product>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Build">
